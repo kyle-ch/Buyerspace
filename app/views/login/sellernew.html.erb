@@ -1,0 +1,30 @@
+<div class="container">
+  <h1>Create a new seller account</h1>
+  <p>Enter your information to create a new account</p>
+
+  <%= form_tag login_sellercreate_path, method: "get", html: {class: "form"} do |f| %>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <label for="email" class="col-sm-2 col-form-label">Email:</label>
+      <p id="email"><%= session[:email] %></p>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <label for="fname" class="col-sm-2 col-form-label">First Name:</label>
+      <%= text_field_tag(:fname, "", class: "form-control", autocomplete: "off") %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <label for="lname" class="col-sm-2 col-form-label">Last Name:</label>
+      <%= text_field_tag(:lname, "", class: "form-control", autocomplete: "off") %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <%= submit_tag "Submit", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+</div>

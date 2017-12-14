@@ -1,0 +1,86 @@
+<div class="container">
+  <div class="row">
+    <% if params[:success] != nil %>
+      <div class="alert alert-success row" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <% if params[:success] == "offer" %>
+          <strong>Success!</strong>
+          Your offer has been made!
+          <% elsif params[:success] == "delete" %>
+            <strong>Success!</strong>
+            Your offer has been deleted!
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+    <div class="row">
+      <h1><%="#{@seller.fname.titlecase} #{@seller.lname.titlecase}"%></h1>
+      <p>
+        Your Rating:
+        <%if @ratings[0].avg != nil%>
+          <%= @ratings[0].avg%>/5
+        <% else %>
+          No rating yet
+        <% end %>
+      </p>
+    </div>
+    <!-- Search -->
+    <div class="row">
+      <%= form_tag seller_search_path, method: "get", html: {class: "form"} do |f| %>
+      <div class="form-group row">
+        <div class="col-sm-8">
+          <label for="q" class="form-label">Search for postings:</label>
+          <%= text_field_tag(:q, "", class: "form-control", autocomplete: "off") %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-8">
+          <%= submit_tag "Submit", class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <div class="list-group col-sm-8">
+      <li class="list-group-item">
+        <b>Active Postings</b>
+      </li>
+      <% for p in @active %>
+        <%=link_to p.title, seller_show_path(:id => p.id), class: "list-group-item"%>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="list-group col-sm-8">
+      <li class="list-group-item">
+        <b>Trending Tags
+        </b>
+      </li>
+      <% for t in @trending %>
+        <%=link_to t.tag_text, seller_tag_path(:id => t.id, :n => t.tag_text), class: "list-group-item"%>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="list-group col-sm-8">
+      <li class="list-group-item">
+        <b>Your Active Offers
+        </b>
+      </li>
+      <% for o in @offers %>
+        <div class="list-group-item">
+          <%= link_to "Delete", seller_delete_path(:id => o.offer_id), class: "pull-right", data: {confirm: "Are you sure you want to permanently delete this offer?"} %>
+          <%="#{o.title} for $#{o.offer_price}"%><br/>
+          <p>
+            <i><%=o.description%></i>
+          </p>
+
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

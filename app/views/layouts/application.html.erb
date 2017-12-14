@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Buyerspace</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <% if session[:buyer_id] != nil && session[:mode] = 0 %>
+            <%= link_to 'Buyerspace', postings_all_path, class: "navbar-brand" %>
+            <% elsif session[:seller_id] != nil && session[:mode] = 1 %>
+              <%= link_to 'Buyerspace', seller_all_path, class: "navbar-brand" %>
+            <% else %>
+              <%= link_to 'Buyerspace', root_path, class: "navbar-brand" %>
+            <% end %>
+          </div>
+          <ul class="nav navbar-nav navbar-right">
+            <% if session[:buyer_id] != nil && session[:mode] = 0 %>
+              <li><%= link_to 'Logout', root_path %></li>
+              <% elsif session[:seller_id] != nil && session[:mode] = 1 %>
+                <li><%= link_to 'Logout', root_path %></li>
+              <% end %>
+            </ul>
+          </div>
+        </nav>
+        <%= yield %>
+
+      </body>
+    </html>

@@ -1,0 +1,110 @@
+<div class="container">
+  <% if params[:success] != nil %>
+  <div class="alert alert-success row" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <%if params[:success] == "update" %>
+    <strong>Success!</strong> Your posting has been updated!
+  <% elsif params[:success] == "accept"%>
+  <strong>Success!</strong> Offer has been accepted!
+  <% elsif params[:success] == "decline"%>
+  <strong>Success!</strong> Offer has been declined!
+  <%end%>
+  </div>
+  <% end %>
+  <div class="row">
+    <% if params[:rated] == "true" %>
+    <div class="alert alert-success row" role="alert">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+      <strong>Success!</strong> Your rating has been submitted!
+    </div>
+    <% end %>
+  </div>
+  <div class="row">
+    <h1>Your Posting</h1>
+    <p>Posting ID :
+      <%=@posting.posting_id%></p>
+  </div>
+  <div class="row">
+    Title:
+    <%= @posting.title %><br/>
+    Posting Date:
+    <%= @posting.posting_date %><br/>
+    Description:
+    <%= @posting.description %><br/>
+    Completed?
+    <% if @posting.completion_status == 1 %>
+      <%="Yes"%><br/>
+    <% else %><%="No"%><br/>
+    <% end %>
+    Asking Price: $<%= @posting.asking_price %><br/>
+    <%= link_to "Edit", postings_edit_path(:id => @posting.posting_id) %><br/>
+    <%= link_to "Delete", postings_delete_path(:id => @posting.posting_id), data: {confirm: "Are you sure you want to permanently delete this posting?"} %>
+    <br/><br/>
+  </div>
+  <% if !@accepted.empty? %>
+    <% o = @accepted[0] %>
+      <div class="row">
+        <div class="col-sm-4">
+          <b>
+            Accepted Offer
+          </b><br/>
+          <%= "Purchased from #{o.fname.titlecase} #{o.lname.titlecase} for " %>
+          <b>$<%= o.offer_price %></b><br/>
+          <i><%= o.description %></i>
+        </li>
+      </div>
+      <div class="col-xs-2">
+        <%= form_tag postings_rate_path(), method: "get", html: {class: "form"} do |f| %>
+        <div class="form-group">
+          <%= hidden_field_tag "seller_id", o.seller_id%>
+          <%= hidden_field_tag "posting_id", @posting.posting_id%>
+          <label for="rating" class="form-label">Rate this seller: (0 - 5)</label>
+          <%= number_field_tag(:rating, "", class: "form-control", within: 0...6, autocomplete: "off") %>
+        </div>
+        <%= submit_tag "Submit", class: "btn btn-primary" %>
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="row">
+    <div class="list-group col-sm-8">
+      <li class="list-group-item">
+        <b>
+          Pending Offers
+        </b>
+      </li>
+      <% for o in @offers %>
+        <% if o.accepted != 'declined' %>
+          <li class="list-group-item">
+            <%= "#{o.fname.titlecase} #{o.lname.titlecase} " %>offered
+            <b>
+              $<%= o.offer_price %></b>
+            and said:
+            <br/>
+            "<%= o.description %>"
+            <br/>
+            Seller's Rating:
+            <%if o.avg != nil%>
+              <%=o.avg%>/5
+            <% else %>
+              No rating yet
+            <% end %>
+            <% if o.accepted == 'accepted' %>
+              <%= "Accepted" %>
+            <% else %>
+              <div class="pull-right">
+                <%= link_to "Accept", postings_accept_path(:id => o.offer_id)%>
+                <%= link_to "Decline", postings_decline_path(:id => o.offer_id)%>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+<% end%>
+</div>

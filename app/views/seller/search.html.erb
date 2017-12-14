@@ -1,0 +1,15 @@
+<div class="container">
+  <div class="row">
+    <h1>Search Results</h1>
+  </div>
+  <div class="row">
+    <div class="list-group col-sm-6">
+      <li class="list-group-item">Postings matching
+        <b><%= params[:q]%></b>
+      </li>
+      <% for p in @results %>
+        <%=link_to p.title, seller_show_path(:id => p.id), class: "list-group-item"%>
+      <% end %>
+    </div>
+  </div>
+</div>

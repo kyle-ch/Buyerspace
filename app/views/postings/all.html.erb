@@ -1,0 +1,42 @@
+<div class="container">
+  <% if params[:success] != nil %>
+  <div class="alert alert-success row" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <%if params[:success] == "create" %>
+    <strong>Success!</strong> Your posting has been created!
+  <% elsif params[:success] == "delete"%>
+  <strong>Success!</strong> Your posting has been deleted!
+  <%end%>
+  </div>
+  <% end %>
+  <div class="row">
+    <h1><%="#{@buyer.fname.titlecase} #{@buyer.lname.titlecase}"%></h1>
+  </div>
+  <div class="row">
+    <%= link_to 'New Posting', postings_new_path%>
+  </div>
+
+  <div class="row">
+    <div class="list-group col-sm-8">
+      <li class="list-group-item">
+        <b>Your Postings</b>
+      </li>
+      <% for p in @postings %>
+        <%=link_to p.title, postings_show_path(:id => p.id), class: "list-group-item"%>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="list-group col-sm-8">
+      <li class="list-group-item">
+        <b>Completed Postings</b>
+      </li>
+      <% for p in @completed %>
+        <%=link_to p.title, postings_show_path(:id => p.id), class: "list-group-item"%>
+      <% end %>
+    </div>
+  </div>
+</div>

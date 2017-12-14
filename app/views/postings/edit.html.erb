@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="row">
+    <h1>Editing Post #
+      <%= @posting.posting_id %>
+    </h1>
+  </div>
+  <%= form_tag postings_update_path, method: "get", html: {class: "form"} do |f| %>
+  <%= hidden_field_tag "id", @posting.posting_id %>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <label for="title" class="col-sm-2 col-form-label">Title:</label>
+      <%= text_field_tag(:title, "", class: "form-control", autocomplete: "off", value: @posting.title) %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <label for="description" class="col-sm-2 col-form-label">Description:</label>
+      <%= text_area_tag(:description, @posting.description, class: "form-control", autocomplete: "off") %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <label for="asking_price" class="col-sm-2 col-form-label">Asking Price: (in USD)</label>
+      <%= number_field_tag(:asking_price, "", class: "form-control", autocomplete: "off", value: @posting.asking_price) %>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-10">
+      <%= submit_tag "Update", class: "btn btn-primary" %>
+    </div>
+  </div>
+<% end %>
+</div>
